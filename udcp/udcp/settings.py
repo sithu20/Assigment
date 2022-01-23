@@ -142,28 +142,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 
-AWS_ACCESS_KEY_ID = 'AKIA53WIVUQIVW5DXJE7'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'zappa-s2hef5tya'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-
-#STATIC_URL = 'static/'
-
-AWS_STATIC_LOCATION = 'static'
-STATICFILES_STORAGE = 'udcp.storage_backends.StaticStorage'
-#STATICFILES_STORAGE = '.storage_backends.StaticStorage'
-STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
-
-AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
-DEFAULT_FILE_STORAGE = 'udcp.storage_backends.PublicMediaStorage'
-#DEFAULT_FILE_STORAGE = '.storage_backends.PublicMediaStorage'
-
-AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
-PRIVATE_FILE_STORAGE = 'udcp.storage_backends.PrivateMediaStorage'
-
+STATIC_URL = 'static/'
 
 
 # Default primary key field type
