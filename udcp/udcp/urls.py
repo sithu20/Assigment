@@ -20,10 +20,6 @@ from rest_framework import routers
 from core import views
 
 urlpatterns = [
-    #path('admin/', admin.site.urls),
-    #path('', include(router.urls)),
     path('useradmin/', admin.site.urls),
-    re_path('api/(?P<version>(v1|v2))/', include('core.urls')),
     path('', include('core.urls')),
-
 ]

@@ -47,7 +47,6 @@ class PasswordField(serializers.CharField):
 
 class TokenObtainSerializer(serializers.Serializer):
     email_field = User.EMAIL_FIELD
-    #businessentity_field = BusinessEntity.pk
     default_error_messages = {
         'no_active_account': ' Default No active account found with the given credentials'
     }
@@ -110,10 +109,10 @@ class TokenObtainPairSerializer(TokenObtainSerializer):
 
                 return data
             else:
-                error = { "detail xxx": "No active account found with the given credentials...."}
+                error = { "detail": "No active account found with the given credentials...."}
                 return error
         except:
-            error = { "detail ee": "No active account found with the given credentials"}
+            error = { "detail": "No active account found with the given credentials"}
             return error
 
 
@@ -140,7 +139,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         split_email = validated_data['email'].split("@", 1)
-        username = str(split_email[0])
+        username = validated_data['email']
         emaildomain = split_email[1]
 
         user = User.objects.create(

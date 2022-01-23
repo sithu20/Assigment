@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0a7c1ed7-7154-4505-85a0-917e68c9f03e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="0a7c1ed7-7154-4505-85a0-917e68c9f03e" name="Changes" comment="remove credentials">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/udcp/core/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/udcp/core/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/udcp/core/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/udcp/core/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/udcp/core/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/udcp/core/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/udcp/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/udcp/core/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/udcp/db.sqlite3" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/udcp/udcp/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/udcp/udcp/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/udcp/zappa_settings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/udcp/udcp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/udcp/udcp/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +26,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="SET_USER_NAME_GLOBALLY" value="false" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -47,6 +53,14 @@
       <option name="presentableId" value="Default" />
       <updated>1642697634001</updated>
     </task>
+    <task id="LOCAL-00001" summary="remove credentials">
+      <created>1642959669097</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1642959669097</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -59,5 +73,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="remove credentials" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove credentials" />
   </component>
 </project>

@@ -8,18 +8,12 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
-from rest_framework import generics
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from django.http import Http404
 from . import serializers as userSerializer
-from .models import UserOccupation as UOP, UserProfile as UP
+from .models import UserOccupation as UOP, UserProfile as UP, UserLoginAudit as ULA
 
-
-class RegisterView1(generics.CreateAPIView):
-    queryset = User.objects.all()
-    permission_classes = (AllowAny,)
-    serializer_class = userSerializer.RegisterSerializer
 
 
 class RegisterView(APIView):
@@ -173,34 +167,44 @@ class OccupationDetail(APIView):
     """
     Retrieve, update or delete
     """
+
     #def get_object(self, pk):
 
     def post(self, request, format='json'):
         requestData = request.data
         requestData['createBy'] = request.user.pk
-        if request.user.groups.filter(name='normal').exists():
-            requestData['user'] = request.user.pk
-        serializer = userSerializer.OccupationSerializer(data=requestData)
 
-        if serializer.is_valid():
-            serializer.save()
-            context = {
-                "Status": {"Code": "01", "Message": "Successfully Created"},
-                "Error": None,
-                "ResponseTime": time.strftime("%Y%m%d%H%M%S"),
-                "Data": serializer.data
-            }
-            return Response(context, status=status.HTTP_201_CREATED)
+        if 'user' in requestData and "ocpName" in requestData and "ocpSalary" in requestData:
+            if request.user.groups.filter(name='normal').exists():
+                requestData['user'] = request.user.pk
+
+            serializer = userSerializer.OccupationSerializer(data=requestData)
+
+            if serializer.is_valid():
+                serializer.save()
+                context = {
+                    "Status": {"Code": "01", "Message": "Successfully Created"},
+                    "Error": None,
+                    "ResponseTime": time.strftime("%Y%m%d%H%M%S"),
+                    "Data": serializer.data
+                }
+                return Response(context, status=status.HTTP_201_CREATED)
+            else:
+                context = {
+                    "Status": {"Code": "500", "Message": "Fail"},
+                    "Error": serializer.errors,
+                    "ResponseTime": time.strftime("%Y%m%d%H%M%S")
+                }
+                return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
             context = {
                 "Status": {"Code": "500", "Message": "Fail"},
-                "Error": serializer.errors,
+                "Error": "Incomplete Data",
                 "ResponseTime": time.strftime("%Y%m%d%H%M%S")
             }
             return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get(self, request, pk, format=None):
-
         try:
             occupation = UOP.objects.get(pk=pk)
             serializer = userSerializer.OccupationSerializer(occupation)
@@ -284,7 +288,7 @@ class OccupationDetail(APIView):
 
 
 @api_view(['POST'])
-def deletemembercode(request,userid):
+def deletemembercode(request):
     if request.method == 'POST':
         try:
             #userobj = User.objects.get(pk=userid)
@@ -296,6 +300,81 @@ def deletemembercode(request,userid):
                 "Status": {"Code": "01","Message": "Successfully Deleted"},
                 "Error": None,
                 "ResponseTime": time.strftime("%Y%m%d%H%M%S")
+            }
+            return Response(context, status=status.HTTP_200_OK)
+        except:
+            context = {
+                "Status": {"Code": "404","Message": "Fail"},
+                "Error": "User Does Not Exist.",
+                "ResponseTime": time.strftime("%Y%m%d%H%M%S")
+            }
+        return Response(context, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_user_login_logs(request):
+    if request.method == 'GET':
+        try:
+
+            if request.user.groups.filter(name='admin').exists():
+                loginlogs = ULA.objects.all()
+                logsdata = []
+                for ll in loginlogs:
+                    logsdata.append(
+                        {
+                            "id":ll.pk,
+                            "email":ll.emailaddress,
+                            "agentinfo":ll.user_agent_info,
+                            "status":ll.status,
+                            "ip":ll.ip,
+                            "datetime":ll.loginDateTime
+                        }
+                    )
+                context = {
+                    "Status": {"Code": "01","Message": "Success"},
+                    "Error": None,
+                    "ResponseTime": time.strftime("%Y%m%d%H%M%S"),
+                    "Data":list(logsdata),
+                }
+            else:
+                context = {
+                    "Status": {"Code": "200", "Message": "Success"},
+                    "Error": "Not Allow to Access for normal user!",
+                    "ResponseTime": time.strftime("%Y%m%d%H%M%S")
+                }
+            return Response(context, status=status.HTTP_200_OK)
+        except:
+            context = {
+                "Status": {"Code": "404","Message": "Fail"},
+                "Error": "Logs Not Exist.",
+                "ResponseTime": time.strftime("%Y%m%d%H%M%S")
+            }
+        return Response(context, status=status.HTTP_404_NOT_FOUND)
+
+
+
+@api_view(['GET'])
+def get_all_users(request):
+    if request.method == 'GET':
+        try:
+            userobj = User.objects.all()
+            #userProfile = UP.objects.get(user=request.user)
+            #occupation = UOP.objects.filter(user=userobj)
+            users = []
+            for usr in userobj:
+                users.append(
+                    {
+                        "id": usr.pk,
+                        "email": usr.email,
+                        "profile": str(request.get_host())+"/profile/"+str(usr.pk),
+                        "occupation": str(request.get_host())+"/user/" + str(usr.pk)+"/occupation/"
+                    }
+                )
+
+            context = {
+                "Status": {"Code": "01","Message": "Success"},
+                "Error": None,
+                "ResponseTime": time.strftime("%Y%m%d%H%M%S"),
+                "Data": users
             }
             return Response(context, status=status.HTTP_200_OK)
         except:
